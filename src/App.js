@@ -33,6 +33,7 @@ function App() {
       <ProductForm/>
 
       <hr />
+      <hr />
       
       
       {/* Switch will be used to handle different 

@@ -62,10 +62,11 @@ const ProductForm = (props) => {
     }
 
     return <div>
-        <h3>New Product Form</h3>
+        <h2>New Product Form</h2>
         <p>
             {/* errors: {JSON.stringify(errors)} */}
         </p>
+
         {JSON.stringify(title)} <br />
         {JSON.stringify(price)}<br />
         {JSON.stringify(description)}<br />
@@ -73,15 +74,26 @@ const ProductForm = (props) => {
         {/* Show errors */}
         {errors.map((err, index) => <p style={{ color: "red" }} key={index}>{err}</p>)}
 
-        <form onSubmit={createProduct}>
-            Title:
-            <input type="text" onChange={e => setTitle(e.target.value)} value={title}/> <br />
-            Price:
-            <input type="number" onChange={e => setPrice(e.target.value)} value={price}/> <br />
-            Description:
-            <textarea onChange={e => setDescription(e.target.value)} value={description}></textarea>
-            <p></p>
-            <button>submit</button>
+
+        
+        <form onSubmit={createProduct} className='form-control' style={{backgroundColor: "black"}}>
+            <div className="form-control mb-3 btn-dark">
+                <label htmlFor="" style={{fontSize: "22px", padding: "0px 10px"}}>Title: </label>
+                <input type="text" onChange={e => setTitle(e.target.value)} value={title}/> <br />
+            </div>
+
+            <div className="form-control mb-3 btn-dark" style={{margin: "0px auto"}}>
+                <label htmlFor="" style={{fontSize: "22px", padding: "0px 10px"}}>Price: </label>
+                <input type="number" onChange={e => setPrice(e.target.value)} value={price}/> <br />
+            </div>
+            
+            <div className="form-control mb-5 btn-dark">
+                <label htmlFor="" style={{fontSize: "22px", paddingRight: "15px", marginLeft: "-40px"}}>Description: </label>
+                <textarea onChange={e => setDescription(e.target.value)} value={description}></textarea>
+            </div>
+            
+            <button type="submit" value="submit" className="btn btn-dark form-control" 
+            style={{color: "cyan", padding: "5px 0px", fontSize: "22px"}}>Submit</button>
         </form>
     </div>;
 };
