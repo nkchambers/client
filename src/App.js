@@ -24,7 +24,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Product Manager</h1>
+      <h1>Product Manager App</h1>
       
       <hr />
 
