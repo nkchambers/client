@@ -1,56 +1,46 @@
+// IMPORT PACKAGES
 import './App.css';
-import {Link, Switch, Route, Redirect} from 'react-router-dom';
-import React, {useEffect, useState} from 'react';
-import axios from 'axios';
+import {Switch, Route, Redirect} from 'react-router-dom';
 
-
+// IMPORTED COMP
 import ProductForm from './components/ProductForm';
+import Main from './components/Main';
+import ViewOne from './components/ViewOne';
 
 function App() {
-
-  const [productsData, setProductsData] = useState([])
-
-
-  useEffect( () => {
-    axios.get('http://localhost:8000/api/products')
-      .then( (res) =>{
-        console.log(res.data.products)
-        setProductsData(res.data.products)
-      })
-      .catch( err => console.log(err)  )
-  }, [])
 
 
 
   return (
     <div className="App">
-      <h1>Product Manager App</h1>
-      
-      <hr />
 
-      {/* Place form comp outside switch 
-      to display on every route */}
-      <ProductForm/>
-
-      <hr />
-      <hr />
-      
       
       {/* Switch will be used to handle different 
       route calls to API >>> depending on inputs from form */}
-      <Switch>
-        <Route path="/"></Route>
-      </Switch>
-
       
-      {
-        // JSON.stringify(data)
-        productsData.map ((product, i) => {
-          return <p key={i}>
-                  {product.title}
-                </p>
-        })
-      }
+      
+      <Switch>
+         {/* VIEW ONE PRODUCT */}
+        <Route path="/products/:id">
+          <ViewOne/>
+        </Route>
+
+        {/* All PRODUCTS */}
+        <Route path="/products">
+          <h1 style={{  }}>Product Manager App</h1>
+          <hr />
+          <hr />
+          <ProductForm/>
+          <hr />
+          <hr />
+          <Main/>
+        </Route>
+        
+        {/* REDIRECT TO HOME */}
+        <Route path="/">
+          <Redirect to="/products"/>
+        </Route>
+      </Switch>
 
     </div>
   );
