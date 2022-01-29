@@ -1,25 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 
-// Product Form Function to take inputs from user
-const ProductForm = (props) => {
+
+// Product Update Form Function to take inputs from user
+const UpdateOne = (props) => {
+
+    // GRABBING VARIABLE FROM URL
+    const { id } = useParams();
+
 
     // Use History to keep track of instance data
     let history = useHistory();
 
-    // STATE Variables
+
+    // STATE Variables - changing variables
     const [title, setTitle] = useState("");
     const [price, setPrice] = useState("");
     const [description, setDescription] = useState("");
 
-    // Errors
-    const [errors, setErrors] = useState([]);
+
+    // // Errors
+    // const [errors, setErrors] = useState([]);
+
+
+    // USE EFFECT TO RENDER INFO WITHOUT REFRESHING
+    useEffect(  () => {
+        // MAKE AXIOS CALL TO DB >>> GRAB OBJ INFO TO PRE-POPULATE UDATE FORM
+        axios.get(`http://localhost:8000/api/products/${id}`)
+            .then(res => {
+                console.log(res.data);
+                setTitle(res.data.product.title);
+                setPrice(res.data.product.price);
+                setDescription(res.data.product.description);
+            })
+            .catch(err => console.log(err))
+    }, [id])
 
 
     // CREATE PRODUCT Function
-    const createProduct = (e) => {
+    const updateProduct = (e) => {
         e.preventDefault();
 
         // Create the new product obj from the form
@@ -30,7 +51,7 @@ const ProductForm = (props) => {
         }
 
         // POST form data to the products_db, with the obj(new product) created
-        axios.post("http://localhost:8000/api/products/new", newProduct)
+        axios.put(`http://localhost:8000/api/products/update/${id}`, newProduct)
             .then(res => {
                 console.log(res.data);
                 console.log("SUCCESS writing to the DB!!");
@@ -38,8 +59,7 @@ const ProductForm = (props) => {
             })
             .catch(err => {
                 console.log("ERROR!!!");
-                console.log(err.response.data);
-
+                console.log(err);
 
 
                 // ERROR HANDLING - PLATFORM METHOD
@@ -52,17 +72,18 @@ const ProductForm = (props) => {
                 // setErrors(errorArr);
 
 
-                // HANDLING ERRORS - ALTERNATIVE WAY >>> Use this one!
-                const { errors } = err.response.data.error;
-                const messages = Object.keys(errors).map(error => errors[error].message)
-                console.log(messages);
-                setErrors(messages);
+                // // HANDLING ERRORS - ALTERNATIVE WAY >>> Use this one!
+                // const { errors } = err.response.data.error;
+                // const messages = Object.keys(errors).map(error => errors[error].message)
+                // console.log(messages);
+                // setErrors(messages);
 
             })
     }
 
+
     return <div>
-        <h2>New Product Form</h2>
+        <h2>Update Product Form</h2>
         <p>
             {/* errors: {JSON.stringify(errors)} */}
         </p>
@@ -73,11 +94,11 @@ const ProductForm = (props) => {
         {JSON.stringify(description)}<br /> */}
 
         {/* Show errors */}
-        {errors.map((err, index) => <p style={{ color: "red" }} key={index}>{err}</p>)}
+        {/* {errors.map((err, index) => <p style={{ color: "red" }} key={index}>{err}</p>)} */}
 
 
 
-        <form onSubmit={createProduct} className='form-control' style={{ backgroundColor: "black" }}>
+        <form onSubmit={updateProduct} className='form-control' style={{ backgroundColor: "black" }}>
             <div className="form-control mb-3 btn-dark">
                 <label htmlFor="" style={{ fontSize: "22px", padding: "0px 10px" }}>Title: </label>
                 <input type="text" onChange={e => setTitle(e.target.value)} value={title} /> <br />
@@ -94,9 +115,9 @@ const ProductForm = (props) => {
             </div>
 
             <button type="submit" value="submit" className="btn btn-dark form-control"
-                style={{ color: "cyan", padding: "5px 0px", fontSize: "22px" }}>Submit</button>
+                style={{ color: "cyan", padding: "5px 0px", fontSize: "22px" }}>Update</button>
         </form>
     </div>;
 };
 
-export default ProductForm;
+export default UpdateOne;

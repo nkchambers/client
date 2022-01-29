@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -31,8 +31,12 @@ const ViewOne = (props) => {
             <hr />
             <p style={{fontSize: "20px", padding: "5px auto"}}>
                 Price: ${viewProduct.price}</p>
-            <p style={{fontSize: "20px", padding: "5px auto"}}>
+            <p style={{fontSize: "20px", padding: "5px auto", marginBottom: "50px"}}>
                 Description: {viewProduct.description}</p>
+
+            <button className="btn btn-dark"
+            style={{ padding: "5px 20px", fontSize: "18px", border: "2px solid cyan" }}>
+            <Link to={`/products/update/${viewProduct._id}`} style={{color: "cyan"}}>Update</Link></button>
         </div>
     );
 };
